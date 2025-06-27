@@ -14,9 +14,11 @@
   "dependencies": {
     "@hapi/hapi": "^21.4.0",
     "@hapi/joi": "^17.1.1",
+    "@prisma/client": "^6.10.1",
     "dotenv": "^16.6.0",
     "nanoid": "^5.1.5",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "prisma": "^6.10.1"
