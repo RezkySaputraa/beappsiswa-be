@@ -13,10 +13,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Beasiswa {
- 
-// }
+model Beasiswa {
+  id                   String    @id @default(cuid())
+  title                String
+  organizer            String    // Penyelenggara: Kementerian Keuangan Republik Indonesia
+  description          String    @db.Text
+  educationLevels      String[]  // Misal: ["S2", "S3"]
+  studyFields          String[]  // Misal: ["Teknik", "Hukum"]
+  scholarshipType      String    // Misal: "Beasiswa Penuh", "Parsial"
+  locations            String[]  // Misal: ["Dalam Negeri", "Luar Negeri"]
+  duration             String?   // Misal: "2 tahun (S2) / 4 tahun (S3)"
+  coverage             String[]  // Cakupan: Biaya pendidikan, Biaya hidup, dll.
+  termsAndConditions   String[]
+  requiredDocuments    String[]
+  registrationStartDate DateTime
+  registrationEndDate  DateTime
+  status               String    // Misal: "pendaftaran", "ditutup", "aktif"
+  registrationLink     String?
+  contact              Json?     // Contoh: { email: "...", telepon: "..." }
+  applicantCount       Int?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
 
-// model Lomba {
- 
-// }
+model Lomba {
+  id                    String      @id @default(cuid())
+  title                 String
+  organizer             String
+  description           String      @db.Text
+  theme                 String?
+  competitionType       String
+  categories            String[]    // Misal: ["Pelajar SMA", "Mahasiswa", "Umum"]
+  level                 String      // Misal: "Nasional", "Provinsi", "Internasional"
+  ageLimit              String?     // Misal: "Maksimal 25 tahun"
+  targetParticipants    String?     // Misal: "Pelajar dan Mahasiswa aktif"
+  location              String?
+  registrationStartDate DateTime
+  registrationEndDate   DateTime
+  submissionDate        DateTime?
+  submissionDeadline    DateTime?
+  judgingEndDate        DateTime?
+  announcementDate      DateTime?
+  termsAndConditions    String[]
+  maxMembers            Int?
+  prizes                LombaPrize[] // Relasi ke model LombaPrize
+  registrationFee       String?     // Misal: "Rp 25.000", "Gratis"
+  howToRegister         String[]
+  registrationLink      String?
+  contact               Json?       // Contoh: { email: "...", whatsapp: "..." }
+  promoMedia            Json?       // Contoh: { instagram: "...", youtube: "..." }
+  applicantCount        Int?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}
+
+model LombaPrize {
+  id        String   @id @default(cuid())
+  lombaId   String    // Foreign key ke Lomba
+  lomba     Lomba     @relation(fields: [lombaId], references: [id], onDelete: Cascade) // Relasi One-to-Many
+  title     String    // Misal: "Juara 1", "Juara Favorit"
+  description String    // Misal: "Rp 5.000.000 + Sertifikat", "E-Sertifikat"
+  rank      Int?      // Untuk sorting, misal 1 untuk Juara 1, 2 untuk Juara 2
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([lombaId, title]) // Juara 1 hanya boleh ada satu untuk satu lomba
+}
