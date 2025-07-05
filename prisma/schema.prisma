@@ -14,68 +14,116 @@ datasource db {
 }
 
 model Beasiswa {
-  id                   String    @id @default(cuid())
-  title                String
-  organizer            String    // Penyelenggara: Kementerian Keuangan Republik Indonesia
-  description          String    @db.Text
-  educationLevels      String[]  // Misal: ["S2", "S3"]
-  studyFields          String[]  // Misal: ["Teknik", "Hukum"]
-  scholarshipType      String    // Misal: "Beasiswa Penuh", "Parsial"
-  locations            String[]  // Misal: ["Dalam Negeri", "Luar Negeri"]
-  duration             String?   // Misal: "2 tahun (S2) / 4 tahun (S3)"
-  coverage             String[]  // Cakupan: Biaya pendidikan, Biaya hidup, dll.
-  termsAndConditions   String[]
-  requiredDocuments    String[]
-  registrationStartDate DateTime
-  registrationEndDate  DateTime
-  status               String    // Misal: "pendaftaran", "ditutup", "aktif"
-  registrationLink     String?
-  contact              Json?     // Contoh: { email: "...", telepon: "..." }
-  applicantCount       Int?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  id                 String @id @db.VarChar(100)
+  judul              String @db.VarChar(255)
+  penyelenggara      String @db.VarChar(255)
+  deskripsi          String @db.Text
+  tingkat_pendidikan String @db.Text // JSON Array
+  bidang_studi       String @db.Text
+  jenis_beasiswa     String @db.VarChar(255)
+  lokasi             String @db.Text // JSON Array
+  durasi             String @db.VarChar(255)
+  cakupan            String @db.Text // JSON Array
+  syarat_ketentuan   String @db.Text // JSON Array
+  dokumen_dibutuhkan String @db.Text // JSON Array
+  status             String @db.VarChar(255)
+  link_pendaftaran   String @db.VarChar(255)
+  jumlah_pendaftar   Int
+  timeline_id        String @unique
+  kontak_id          String
+
+  timeline Beasiswa_Timeline @relation(fields: [timeline_id], references: [id])
+  kontak   Beasiswa_Kontak   @relation(fields: [kontak_id], references: [id])
+
+  @@map("beasiswa")
+}
+
+model Beasiswa_Timeline {
+  id                   String    @id @default(uuid())
+  pendaftaran_mulai    DateTime  @db.Date
+  pendaftaran_berakhir DateTime  @db.Date
+  beasiswa             Beasiswa?
+
+  @@map("beasiswa_timeline")
+}
+
+model Beasiswa_Kontak {
+  id       String     @id @default(uuid())
+  email    String
+  telepon  String
+  beasiswa Beasiswa[]
+
+  @@map("beasiswa_kontak")
 }
 
 model Lomba {
-  id                    String      @id @default(cuid())
-  title                 String
-  organizer             String
-  description           String      @db.Text
-  theme                 String?
-  competitionType       String
-  categories            String[]    // Misal: ["Pelajar SMA", "Mahasiswa", "Umum"]
-  level                 String      // Misal: "Nasional", "Provinsi", "Internasional"
-  ageLimit              String?     // Misal: "Maksimal 25 tahun"
-  targetParticipants    String?     // Misal: "Pelajar dan Mahasiswa aktif"
-  location              String?
-  registrationStartDate DateTime
-  registrationEndDate   DateTime
-  submissionDate        DateTime?
-  submissionDeadline    DateTime?
-  judgingEndDate        DateTime?
-  announcementDate      DateTime?
-  termsAndConditions    String[]
-  maxMembers            Int?
-  prizes                LombaPrize[] // Relasi ke model LombaPrize
-  registrationFee       String?     // Misal: "Rp 25.000", "Gratis"
-  howToRegister         String[]
-  registrationLink      String?
-  contact               Json?       // Contoh: { email: "...", whatsapp: "..." }
-  promoMedia            Json?       // Contoh: { instagram: "...", youtube: "..." }
-  applicantCount        Int?
-  createdAt             DateTime    @default(now())
-  updatedAt             DateTime    @updatedAt
+  id                String @id @db.VarChar(100)
+  judul             String @db.VarChar(255)
+  penyelenggara     String @db.VarChar(255)
+  deskripsi         String @db.Text
+  tema              String @db.VarChar(255)
+  jenis_lomba       String @db.VarChar(255)
+  kategori          String @db.Text // JSON Array
+  tingkat           String @db.VarChar(255)
+  batas_usia        String @db.VarChar(255)
+  target_peserta    String @db.Text
+  lokasi            String @db.VarChar(255)
+  maksimal_anggota  Int
+  biaya_pendaftaran Int
+  syarat_ketentuan  String @db.Text // JSON Array
+  cara_mendaftar    String @db.Text // JSON Array
+  link_pendaftaran  String @db.VarChar(255)
+  jumlah_pendaftar  Int
+  timeline_id       String @unique
+  kontak_id         String
+
+  timeline      Lomba_Timeline       @relation(fields: [timeline_id], references: [id])
+  kontak        Lomba_Kontak         @relation(fields: [kontak_id], references: [id])
+  hadiah        Lomba_Hadiah[]
+  media_promosi Lomba_MediaPromosi[]
+
+  @@map("lomba")
 }
 
-model LombaPrize {
-  id        String   @id @default(cuid())
-  lombaId   String    // Foreign key ke Lomba
-  lomba     Lomba     @relation(fields: [lombaId], references: [id], onDelete: Cascade) // Relasi One-to-Many
-  title     String    // Misal: "Juara 1", "Juara Favorit"
-  description String    // Misal: "Rp 5.000.000 + Sertifikat", "E-Sertifikat"
-  rank      Int?      // Untuk sorting, misal 1 untuk Juara 1, 2 untuk Juara 2
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model Lomba_Timeline {
+  id                  String   @id @default(uuid())
+  pendaftaran_mulai   DateTime @db.Date
+  pendaftaran_selesai DateTime @db.Date
+  pengumpulan_karya   DateTime @db.Date
+  deadline_karya      DateTime @db.Date
+  penjurian           String   @db.VarChar(255)
+  pengumuman          DateTime @db.Date
+  lomba               Lomba?
 
-  @@unique([lombaId, title]) // Juara 1 hanya boleh ada satu untuk satu lomba
+  @@map("lomba_timeline")
+}
+
+model Lomba_Kontak {
+  id        String  @id @default(uuid())
+  email     String
+  whatsapp  String
+  instagram String
+  lomba     Lomba[]
+
+  @@map("lomba_kontak")
+}
+
+model Lomba_Hadiah {
+  id       String @id @default(uuid())
+  lomba_id String
+  juara    String
+  hadiah   String
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+
+  @@map("lomba_hadiah")
+}
+
+model Lomba_MediaPromosi {
+  id       String @id @default(uuid())
+  lomba_id String
+  platform String
+  link     String
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+
+  @@map("lomba_media_promosi")
 }

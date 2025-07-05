@@ -1,12 +1,12 @@
 const routes = (handler) => [
   {
     method: "GET",
-    path: "/lomba",
+    path: "/api/lomba",
     handler: handler.getCompetitionsHandler,
   },
   {
     method: "GET",
-    path: "/lomba/{id}",
+    path: "/api/lomba/{id}",
     handler: handler.getCompetitionByIdHandler,
   },
 ];

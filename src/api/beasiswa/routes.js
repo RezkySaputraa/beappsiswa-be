@@ -1,12 +1,12 @@
 const routes = (handler) => [
   {
     method: "GET",
-    path: "/beasiswa",
+    path: "/api/beasiswa",
     handler: handler.getScholarshipsHandler,
   },
   {
     method: "GET",
-    path: "/beasiswa/{id}",
+    path: "/api/beasiswa/{id}",
     handler: handler.getScholarshipByIdHandler,
   },
 ];
