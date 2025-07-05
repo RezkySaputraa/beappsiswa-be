@@ -74,9 +74,8 @@ model Lomba {
   cara_mendaftar    String @db.Text // JSON Array
   link_pendaftaran  String @db.VarChar(255)
   jumlah_pendaftar  Int
-
-  timeline_id String @unique
-  kontak_id   String
+  timeline_id       String @unique
+  kontak_id         String
 
   timeline      Lomba_Timeline       @relation(fields: [timeline_id], references: [id])
   kontak        Lomba_Kontak         @relation(fields: [kontak_id], references: [id])
