@@ -13,10 +13,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Beasiswa {
- 
-// }
+model Beasiswa {
+  id                 String @id @db.VarChar(100)
+  judul              String @db.VarChar(255)
+  penyelenggara      String @db.VarChar(255)
+  deskripsi          String @db.Text
+  tingkat_pendidikan String @db.Text // JSON Array
+  bidang_studi       String @db.Text
+  jenis_beasiswa     String @db.VarChar(255)
+  lokasi             String @db.Text // JSON Array
+  durasi             String @db.VarChar(255)
+  cakupan            String @db.Text // JSON Array
+  syarat_ketentuan   String @db.Text // JSON Array
+  dokumen_dibutuhkan String @db.Text // JSON Array
+  status             String @db.VarChar(255)
+  link_pendaftaran   String @db.VarChar(255)
+  jumlah_pendaftar   Int
+  timeline_id        String @unique
+  kontak_id          String
 
-// model Lomba {
- 
-// }
+  timeline Beasiswa_Timeline @relation(fields: [timeline_id], references: [id])
+  kontak   Beasiswa_Kontak   @relation(fields: [kontak_id], references: [id])
+
+  @@map("beasiswa")
+}
+
+model Beasiswa_Timeline {
+  id                   String    @id @default(uuid())
+  pendaftaran_mulai    DateTime  @db.Date
+  pendaftaran_berakhir DateTime  @db.Date
+  beasiswa             Beasiswa?
+
+  @@map("beasiswa_timeline")
+}
+
+model Beasiswa_Kontak {
+  id       String     @id @default(uuid())
+  email    String
+  telepon  String
+  beasiswa Beasiswa[]
+
+  @@map("beasiswa_kontak")
+}
+
+model Lomba {
+  id                String @id @db.VarChar(100)
+  judul             String @db.VarChar(255)
+  penyelenggara     String @db.VarChar(255)
+  deskripsi         String @db.Text
+  tema              String @db.VarChar(255)
+  jenis_lomba       String @db.VarChar(255)
+  kategori          String @db.Text // JSON Array
+  tingkat           String @db.VarChar(255)
+  batas_usia        String @db.VarChar(255)
+  target_peserta    String @db.Text
+  lokasi            String @db.VarChar(255)
+  maksimal_anggota  Int
+  biaya_pendaftaran Int
+  syarat_ketentuan  String @db.Text // JSON Array
+  cara_mendaftar    String @db.Text // JSON Array
+  link_pendaftaran  String @db.VarChar(255)
+  jumlah_pendaftar  Int
+
+  timeline_id String @unique
+  kontak_id   String
+
+  timeline      Lomba_Timeline       @relation(fields: [timeline_id], references: [id])
+  kontak        Lomba_Kontak         @relation(fields: [kontak_id], references: [id])
+  hadiah        Lomba_Hadiah[]
+  media_promosi Lomba_MediaPromosi[]
+
+  @@map("lomba")
+}
+
+model Lomba_Timeline {
+  id                  String   @id @default(uuid())
+  pendaftaran_mulai   DateTime @db.Date
+  pendaftaran_selesai DateTime @db.Date
+  pengumpulan_karya   DateTime @db.Date
+  deadline_karya      DateTime @db.Date
+  penjurian           String   @db.VarChar(255)
+  pengumuman          DateTime @db.Date
+  lomba               Lomba?
+
+  @@map("lomba_timeline")
+}
+
+model Lomba_Kontak {
+  id        String  @id @default(uuid())
+  email     String
+  whatsapp  String
+  instagram String
+  lomba     Lomba[]
+
+  @@map("lomba_kontak")
+}
+
+model Lomba_Hadiah {
+  id       String @id @default(uuid())
+  lomba_id String
+  juara    String
+  hadiah   String
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+
+  @@map("lomba_hadiah")
+}
+
+model Lomba_MediaPromosi {
+  id       String @id @default(uuid())
+  lomba_id String
+  platform String
+  link     String
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+
+  @@map("lomba_media_promosi")
+}
