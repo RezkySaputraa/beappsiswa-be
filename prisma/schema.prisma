@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Beasiswa {
-  id                 String @id @db.VarChar(100)
+  id                 String @id @default(cuid()) @db.VarChar(100)
   judul              String @db.VarChar(255)
   penyelenggara      String @db.VarChar(255)
   deskripsi          String @db.Text
@@ -57,7 +57,7 @@ model Beasiswa_Kontak {
 }
 
 model Lomba {
-  id                String @id @db.VarChar(100)
+  id                String @id @default(cuid()) @db.VarChar(100)
   judul             String @db.VarChar(255)
   penyelenggara     String @db.VarChar(255)
   deskripsi         String @db.Text
