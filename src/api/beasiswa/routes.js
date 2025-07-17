@@ -35,7 +35,12 @@ const routes = (handler) => [
     method: "DELETE",
     path: "/api/beasiswa/{id}",
     handler: handler.deleteBeasiswaHandler,
-  }
+  },
+  {
+    method: "GET",
+    path: "/",
+    handler: handler.testingApi, 
+  },
 ];
 
 export default routes;

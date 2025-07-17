@@ -1,3 +1,4 @@
+import { request } from "http";
 import ClientError from "../../exceptions/ClientError.js";
 
 class ScholarshipsHandler {
@@ -153,6 +154,25 @@ class ScholarshipsHandler {
           })
           .code(error.statusCode);
       }
+      return h
+        .response({
+          status: "error",
+          message: "Terjadi kegagalan pada server kami.",
+        })
+        .code(500);
+    }
+  };
+
+  testingApi = async (request, h) => {
+    try {
+      return h
+        .response({
+          status: "success",
+          message: "API Success",
+        })
+        .code(200);
+    } catch (error) {
+      console.error(error);
       return h
         .response({
           status: "error",
