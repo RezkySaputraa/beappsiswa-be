@@ -32,8 +32,8 @@ model Beasiswa {
   timeline_id        String @unique
   kontak_id          String
 
-  timeline Beasiswa_Timeline @relation(fields: [timeline_id], references: [id])
-  kontak   Beasiswa_Kontak   @relation(fields: [kontak_id], references: [id])
+  timeline Beasiswa_Timeline @relation(fields: [timeline_id], references: [id], onDelete: Cascade)
+  kontak   Beasiswa_Kontak   @relation(fields: [kontak_id], references: [id], onDelete: Cascade)
 
   @@map("beasiswa")
 }
@@ -77,8 +77,8 @@ model Lomba {
   timeline_id       String @unique
   kontak_id         String
 
-  timeline      Lomba_Timeline       @relation(fields: [timeline_id], references: [id])
-  kontak        Lomba_Kontak         @relation(fields: [kontak_id], references: [id])
+  timeline      Lomba_Timeline         @relation(fields: [timeline_id], references: [id], onDelete: Cascade)
+  kontak        Lomba_Kontak           @relation(fields: [kontak_id], references: [id], onDelete: Cascade)
   hadiah        Lomba_Hadiah[]
   media_promosi Lomba_MediaPromosi[]
 
@@ -113,7 +113,7 @@ model Lomba_Hadiah {
   lomba_id String
   juara    String
   hadiah   String
-  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id], onDelete: Cascade)
 
   @@map("lomba_hadiah")
 }
@@ -123,7 +123,7 @@ model Lomba_MediaPromosi {
   lomba_id String
   platform String
   link     String
-  lomba    Lomba  @relation(fields: [lomba_id], references: [id])
+  lomba    Lomba  @relation(fields: [lomba_id], references: [id], onDelete: Cascade)
 
   @@map("lomba_media_promosi")
 }

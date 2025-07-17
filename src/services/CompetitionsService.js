@@ -234,59 +234,19 @@ class CompetitionsService {
     await prismaClient.$transaction(transactions);
   }
 
-  async deleteLombaById(id) {
-    const lombaToDelete = await prismaClient.lomba.findUnique({
-      where: { id },
-      include: {
-        timeline: true,
-        kontak: true,
-        hadiah: true,
-        media_promosi: true,
-      }
-    });
+async deleteLombaById(id) {
+  const lombaToDelete = await prismaClient.lomba.findUnique({
+    where: { id },
+  });
 
-    if (!lombaToDelete) {
-      throw new NotFoundError('Lomba tidak ditemukan');
-    }
-
-    const transactions = [];
-
-    if (lombaToDelete.timeline) {
-      transactions.push(
-        prismaClient.lomba_Timeline.delete({
-          where: { id: lombaToDelete.timeline.id },
-        })
-      );
-    }
-
-    if (lombaToDelete.kontak) {
-      transactions.push(
-        prismaClient.lomba_Kontak.delete({
-          where: { id: lombaToDelete.kontak.id },
-        })
-      );
-    }
-
-    transactions.push(
-      prismaClient.lomba_Hadiah.deleteMany({
-        where: { lomba_id: id },
-      })
-    );
-
-    transactions.push(
-      prismaClient.lomba_MediaPromosi.deleteMany({
-        where: { lomba_id: id },
-      })
-    );
-
-    transactions.push(
-      prismaClient.lomba.delete({
-        where: { id },
-      })
-    );
-
-    await prismaClient.$transaction(transactions);
+  if (!lombaToDelete) {
+    throw new NotFoundError('Lomba tidak ditemukan');
   }
+
+  await prismaClient.lomba.delete({
+    where: { id },
+  });
+}
 }
 
 export default CompetitionsService;
