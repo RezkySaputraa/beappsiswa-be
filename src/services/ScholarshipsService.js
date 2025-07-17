@@ -1,6 +1,7 @@
 import NotFoundError from "../exceptions/NotFoundError.js"; 
 import ClientError from "../exceptions/ClientError.js";     
 import { prismaClient } from "../utils/prisma.js";          
+import { nanoid } from "nanoid";
 
 class ScholarshipsService {
   async getScholarships() {
@@ -78,6 +79,7 @@ class ScholarshipsService {
 
     const newBeasiswa = await prismaClient.beasiswa.create({
       data: {
+        id: `beasiswa-${nanoid(10)}`,
         ...otherBeasiswaData,
         tingkat_pendidikan: stringifiedTingkatPendidikan,
         bidang_studi: stringifiedBidangStudi,
@@ -196,41 +198,15 @@ class ScholarshipsService {
   async deleteBeasiswaById(id) {
     const beasiswaToDelete = await prismaClient.beasiswa.findUnique({
       where: { id },
-      include: {
-        timeline: true,
-        kontak: true,
-      }
     });
 
     if (!beasiswaToDelete) {
       throw new NotFoundError('Beasiswa tidak ditemukan');
     }
 
-    const transactions = [];
-
-    if (beasiswaToDelete.timeline) {
-      transactions.push(
-        prismaClient.beasiswa_Timeline.delete({
-          where: { id: beasiswaToDelete.timeline.id },
-        })
-      );
-    }
-
-    if (beasiswaToDelete.kontak) {
-      transactions.push(
-        prismaClient.beasiswa_Kontak.delete({
-          where: { id: beasiswaToDelete.kontak.id },
-        })
-      );
-    }
-
-    transactions.push(
-      prismaClient.beasiswa.delete({
-        where: { id },
-      })
-    );
-
-    await prismaClient.$transaction(transactions);
+    await prismaClient.beasiswa.delete({
+      where: { id },
+    });
   }
 }
 
