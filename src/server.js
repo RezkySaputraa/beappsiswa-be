@@ -47,6 +47,7 @@ const init = async () => {
           title: "Scholarship & Competition API Documentation",
           version: "1.0.0",
         },
+        grouping: "tags",
       },
     },
   ]);
