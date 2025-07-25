@@ -3,10 +3,10 @@
 ---
 
 ## 🚀 Tech Stack
-- **Backend Framework**: Hapi.js
-- **Documentation**: Hapi-Swagger
-- **Validation**: Joi
-- **Database**: PostgreSQL
+- **Backend Framework**: 
+- dst dst
+- dst
+- **Documentation**: Swagger
 - **Deployment**: Railway
 
 ---
