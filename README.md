@@ -1,4 +1,4 @@
-# 📘 BackEnd — BeAppSiswa
+# 🎓 BackEnd — BeAppSiswa
 
 ## 🚀 Tech Stack
 - **Backend Framework**: Hapi.js
