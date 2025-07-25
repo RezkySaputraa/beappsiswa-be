@@ -1,6 +1,6 @@
 import NotFoundError from "../exceptions/NotFoundError.js";
-import ClientError from "../exceptions/ClientError.js";
 import { prismaClient } from "../utils/prisma.js";
+import { nanoid } from "nanoid";
 
 class CompetitionsService {
   async getCompetitions() {
@@ -72,6 +72,7 @@ class CompetitionsService {
 
     const newLomba = await prismaClient.lomba.create({
       data: {
+        id: `lomba-${nanoid(10)}`,
         ...otherLombaData,
         kategori: stringifiedKategori,
         syarat_ketentuan: stringifiedSyaratKetentuan,

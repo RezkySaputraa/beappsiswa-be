@@ -1,10 +1,13 @@
 import Hapi from "@hapi/hapi";
-import ClientError from "./exceptions/ClientError.js"; 
+import Inert from "@hapi/inert";
+import Vision from "@hapi/vision";
+import HapiSwagger from "hapi-swagger";
+import ClientError from "./exceptions/ClientError.js";
 import dotenv from "dotenv";
-import ScholarshipsService from "./services/ScholarshipsService.js"; 
-import CompetitionsService from "./services/CompetitionsService.js"; 
-import scholarships from "./api/beasiswa/index.js"; 
-import competitions from "./api/lomba/index.js";     
+import ScholarshipsService from "./services/ScholarshipsService.js";
+import CompetitionsService from "./services/CompetitionsService.js";
+import scholarships from "./api/beasiswa/index.js";
+import competitions from "./api/lomba/index.js";
 
 dotenv.config();
 
@@ -35,6 +38,17 @@ const init = async () => {
         service: competitionsService,
       },
     },
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: {
+        info: {
+          title: "Scholarship & Competition API Documentation",
+          version: "1.0.0",
+        },
+      },
+    },
   ]);
 
   server.ext("onPreResponse", (request, h) => {
@@ -50,18 +64,18 @@ const init = async () => {
     }
 
     if (response.isBoom && response.output.statusCode >= 500) {
-        const newResponse = h.response({
-            status: "error",
-            message: "Maaf, terjadi kegagalan pada server kami.",
-        });
-        newResponse.code(500);
-        return newResponse;
+      const newResponse = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      newResponse.code(500);
+      return newResponse;
     }
-    
+
     if (response.isBoom) {
-        return h.continue;
+      return h.continue;
     }
-    
+
     return h.continue;
   });
 

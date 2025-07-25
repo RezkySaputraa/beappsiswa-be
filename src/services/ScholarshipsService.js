@@ -1,6 +1,5 @@
-import NotFoundError from "../exceptions/NotFoundError.js"; 
-import ClientError from "../exceptions/ClientError.js";     
-import { prismaClient } from "../utils/prisma.js";          
+import NotFoundError from "../exceptions/NotFoundError.js";
+import { prismaClient } from "../utils/prisma.js";
 import { nanoid } from "nanoid";
 
 class ScholarshipsService {
@@ -70,12 +69,16 @@ class ScholarshipsService {
       ...otherBeasiswaData
     } = payload;
 
-    const stringifiedTingkatPendidikan = JSON.stringify(tingkat_pendidikan || []);
+    const stringifiedTingkatPendidikan = JSON.stringify(
+      tingkat_pendidikan || []
+    );
     const stringifiedBidangStudi = JSON.stringify(bidang_studi || []);
     const stringifiedLokasi = JSON.stringify(lokasi || []);
     const stringifiedCakupan = JSON.stringify(cakupan || []);
     const stringifiedSyaratKetentuan = JSON.stringify(syarat_ketentuan || []);
-    const stringifiedDokumenDibutuhkan = JSON.stringify(dokumen_dibutuhkan || []);
+    const stringifiedDokumenDibutuhkan = JSON.stringify(
+      dokumen_dibutuhkan || []
+    );
 
     const newBeasiswa = await prismaClient.beasiswa.create({
       data: {
@@ -103,7 +106,7 @@ class ScholarshipsService {
       include: {
         timeline: true,
         kontak: true,
-      }
+      },
     });
 
     const result = {
@@ -125,11 +128,11 @@ class ScholarshipsService {
       include: {
         timeline: true,
         kontak: true,
-      }
+      },
     });
 
     if (!beasiswaToUpdate) {
-      throw new NotFoundError('Beasiswa tidak ditemukan');
+      throw new NotFoundError("Beasiswa tidak ditemukan");
     }
 
     const {
@@ -145,21 +148,37 @@ class ScholarshipsService {
     } = payload;
 
     const updateBeasiswaData = {};
-    if (otherBeasiswaData.judul !== undefined) updateBeasiswaData.judul = otherBeasiswaData.judul;
-    if (otherBeasiswaData.penyelenggara !== undefined) updateBeasiswaData.penyelenggara = otherBeasiswaData.penyelenggara;
-    if (otherBeasiswaData.deskripsi !== undefined) updateBeasiswaData.deskripsi = otherBeasiswaData.deskripsi;
-    if (otherBeasiswaData.jenis_beasiswa !== undefined) updateBeasiswaData.jenis_beasiswa = otherBeasiswaData.jenis_beasiswa;
-    if (otherBeasiswaData.durasi !== undefined) updateBeasiswaData.durasi = otherBeasiswaData.durasi;
-    if (otherBeasiswaData.status !== undefined) updateBeasiswaData.status = otherBeasiswaData.status;
-    if (otherBeasiswaData.link_pendaftaran !== undefined) updateBeasiswaData.link_pendaftaran = otherBeasiswaData.link_pendaftaran;
-    if (otherBeasiswaData.jumlah_pendaftar !== undefined) updateBeasiswaData.jumlah_pendaftar = otherBeasiswaData.jumlah_pendaftar;
+    if (otherBeasiswaData.judul !== undefined)
+      updateBeasiswaData.judul = otherBeasiswaData.judul;
+    if (otherBeasiswaData.penyelenggara !== undefined)
+      updateBeasiswaData.penyelenggara = otherBeasiswaData.penyelenggara;
+    if (otherBeasiswaData.deskripsi !== undefined)
+      updateBeasiswaData.deskripsi = otherBeasiswaData.deskripsi;
+    if (otherBeasiswaData.jenis_beasiswa !== undefined)
+      updateBeasiswaData.jenis_beasiswa = otherBeasiswaData.jenis_beasiswa;
+    if (otherBeasiswaData.durasi !== undefined)
+      updateBeasiswaData.durasi = otherBeasiswaData.durasi;
+    if (otherBeasiswaData.status !== undefined)
+      updateBeasiswaData.status = otherBeasiswaData.status;
+    if (otherBeasiswaData.link_pendaftaran !== undefined)
+      updateBeasiswaData.link_pendaftaran = otherBeasiswaData.link_pendaftaran;
+    if (otherBeasiswaData.jumlah_pendaftar !== undefined)
+      updateBeasiswaData.jumlah_pendaftar = otherBeasiswaData.jumlah_pendaftar;
 
-    if (tingkat_pendidikan !== undefined) updateBeasiswaData.tingkat_pendidikan = JSON.stringify(tingkat_pendidikan);
-    if (bidang_studi !== undefined) updateBeasiswaData.bidang_studi = JSON.stringify(bidang_studi);
-    if (lokasi !== undefined) updateBeasiswaData.lokasi = JSON.stringify(lokasi);
-    if (cakupan !== undefined) updateBeasiswaData.cakupan = JSON.stringify(cakupan);
-    if (syarat_ketentuan !== undefined) updateBeasiswaData.syarat_ketentuan = JSON.stringify(syarat_ketentuan);
-    if (dokumen_dibutuhkan !== undefined) updateBeasiswaData.dokumen_dibutuhkan = JSON.stringify(dokumen_dibutuhkan);
+    if (tingkat_pendidikan !== undefined)
+      updateBeasiswaData.tingkat_pendidikan =
+        JSON.stringify(tingkat_pendidikan);
+    if (bidang_studi !== undefined)
+      updateBeasiswaData.bidang_studi = JSON.stringify(bidang_studi);
+    if (lokasi !== undefined)
+      updateBeasiswaData.lokasi = JSON.stringify(lokasi);
+    if (cakupan !== undefined)
+      updateBeasiswaData.cakupan = JSON.stringify(cakupan);
+    if (syarat_ketentuan !== undefined)
+      updateBeasiswaData.syarat_ketentuan = JSON.stringify(syarat_ketentuan);
+    if (dokumen_dibutuhkan !== undefined)
+      updateBeasiswaData.dokumen_dibutuhkan =
+        JSON.stringify(dokumen_dibutuhkan);
 
     const transactions = [
       prismaClient.beasiswa.update({
@@ -173,8 +192,12 @@ class ScholarshipsService {
         prismaClient.beasiswa_Timeline.update({
           where: { id: beasiswaToUpdate.timeline.id },
           data: {
-            pendaftaran_mulai: timeline.pendaftaran_mulai ? new Date(timeline.pendaftaran_mulai) : undefined,
-            pendaftaran_berakhir: timeline.pendaftaran_berakhir ? new Date(timeline.pendaftaran_berakhir) : undefined,
+            pendaftaran_mulai: timeline.pendaftaran_mulai
+              ? new Date(timeline.pendaftaran_mulai)
+              : undefined,
+            pendaftaran_berakhir: timeline.pendaftaran_berakhir
+              ? new Date(timeline.pendaftaran_berakhir)
+              : undefined,
           },
         })
       );
@@ -201,7 +224,7 @@ class ScholarshipsService {
     });
 
     if (!beasiswaToDelete) {
-      throw new NotFoundError('Beasiswa tidak ditemukan');
+      throw new NotFoundError("Beasiswa tidak ditemukan");
     }
 
     await prismaClient.beasiswa.delete({
