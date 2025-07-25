@@ -1,5 +1,7 @@
 # 🎓 BackEnd — BeAppSiswa
 
+---
+
 ## 🚀 Tech Stack
 - **Backend Framework**: Hapi.js
 - **Documentation**: Hapi-Swagger
