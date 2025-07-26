@@ -9,7 +9,7 @@
 - Prisma : Alat ORM (Object-Relational Mapping) dan query builder modern yang mempermudah interaksi antara aplikasi JavaScript dengan database. Prisma memungkinkan penulisan kode database yang aman, type-safe, dan lebih intuitif.
 - Joi : Library untuk validasi skema data yang digunakan untuk memastikan bahwa data yang masuk ke aplikasi telah memenuhi struktur, tipe, dan batasan yang telah ditentukan. Ini penting untuk menjaga integritas data dan keamanan aplikasi.
 - Node.js : Runtime environment JavaScript open-source yang memungkinkan eksekusi kode JavaScript di luar peramban web. Node.js adalah fondasi untuk menjalankan aplikasi backend yang dibangun dengan Hapi.js.
-- Vercel : Platform cloud yang dioptimalkan untuk pengembangan frontend melakukan deployment dan hosting dari aplikasi.
+- Swagger : Kumpulan alat berbasis spesifikasi OpenAPI yang digunakan untuk menghasilkan dokumentasi API interaktif secara otomatis, memudahkan developer lain untuk memahami dan menguji endpoint API secara visual.
 - Railway : Platform infrastruktur cloud yang menyediakan cara cepat dan mudah untuk deploy, host, dan mengelola aplikasi, database, dan layanan backend. Digunakan untuk hosting utama aplikasi backend Hapi.js.
 - Postman : Aplikasi yang digunakan untuk pengujian, pengembangan, dan dokumentasi API selama proses pengembangan untuk mengirimkan permintaan ke API, menguji endpoint, dan memverifikasi respons, memastikan API berfungsi sesuai harapan.
 - **Documentation**: Swagger
