@@ -13,7 +13,6 @@
 - Railway : Platform infrastruktur cloud yang menyediakan cara cepat dan mudah untuk deploy, host, dan mengelola aplikasi, database, dan layanan backend. Digunakan untuk hosting utama aplikasi backend Hapi.js.
 - Postman : Aplikasi yang digunakan untuk pengujian, pengembangan, dan dokumentasi API selama proses pengembangan untuk mengirimkan permintaan ke API, menguji endpoint, dan memverifikasi respons, memastikan API berfungsi sesuai harapan.
 - **Documentation**: Swagger
-- **Deployment**: Railway
 
 ---
 
